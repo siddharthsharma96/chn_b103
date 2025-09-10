@@ -1,0 +1,63 @@
+/* Universal Selector */
+* {
+  /* color: red; */
+}
+
+/* Tag Selector */
+h2 {
+  color: pink;
+}
+
+/* id Selector # */
+
+#as {
+  color: blue;
+}
+
+/* Class Selector . */
+.a {
+  color: green;
+}
+
+/* Group Selector , */
+
+h4,
+h2 {
+  color: orange;
+}
+
+/* Descendent selctor */
+/* div p {
+  color: purple;
+} */
+
+/* Child Selctor */
+div > p {
+  color: purple;
+}
+
+/* Attribute selector */
+button[type="reset"] {
+  background-color: red;
+}
+
+/* Pseudo Class Selector : */
+li:nth-child(2) {
+  color: green;
+}
+li:hover {
+  color: orange;
+}
+
+/* Pseudo Element Selector :: */
+#q::after {
+  content: " Hello world ";
+}
+
+h1 {
+  border: 1px solid red;
+  /* padding: 20px; */
+  /* padding: 10px 100px 50px 120px; */
+  padding: 100px 200px;
+  margin: 50px;
+}
