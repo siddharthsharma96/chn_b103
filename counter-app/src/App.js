@@ -18,9 +18,14 @@ function App() {
   // 3.Without array of dependencies
   useEffect(() => {
     if (a < 0) {
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         setA(0);
       }, 2000);
+
+      // Cleanup
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [a]);
   return (
