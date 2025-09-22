@@ -1,0 +1,45 @@
+.profile__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 60px; */
+  padding: 80px;
+  height: 90vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile__title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.profile__card {
+  display: flex;
+  gap: 40px;
+  background-color: #f8f9fa;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+  margin-bottom: 30px;
+}
+
+.profile__card p {
+  font-size: 18px;
+  color: #444;
+  margin: 10px 0;
+}
+
+.profile__card strong {
+  color: #111;
+}
+
+.profile__error {
+  color: red;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+}

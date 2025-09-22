@@ -1,0 +1,92 @@
+.trusted-section {
+  padding: 4rem 1rem;
+  background-color: #fdfcff;
+}
+
+.trusted-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trusted-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.trusted-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.trusted-header .highlight {
+  color: #007bff;
+}
+
+.trusted-header p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: #666;
+  font-size: 1rem;
+}
+
+.trusted-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .trusted-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.trusted-card {
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.trusted-card:hover {
+  transform: scale(1.05);
+}
+
+.trusted-icon-circle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(
+    to bottom right,
+    rgb(221, 226, 255),
+    rgb(246, 246, 255)
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.trusted-card:hover .trusted-icon-circle {
+  background: linear-gradient(
+    to bottom right,
+    rgb(221, 226, 255),
+    rgb(246, 246, 255)
+  );
+}
+
+.trusted-icon {
+  font-size: 48px;
+  color: #007bff;
+}
+
+.trusted-card h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.trusted-card p {
+  font-size: 0.9rem;
+  color: #777;
+}
