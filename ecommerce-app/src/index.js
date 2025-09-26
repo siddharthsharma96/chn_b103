@@ -12,6 +12,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import Profile from "./Pages/Profile";
 import AddProduct from "./Pages/AddProduct";
 import PageNotFound from "./Pages/PageNotFound";
+import ProtectedRoute from "./UI/ProtectedRoute";
 
 const routes = createBrowserRouter([
   {
@@ -36,11 +37,20 @@ const routes = createBrowserRouter([
       },
       {
         path: "/adminDashboard",
-        element: <AdminDashboard></AdminDashboard>,
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard></AdminDashboard>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile></Profile>,
+        element: (
+          <ProtectedRoute>
+            {" "}
+            <Profile></Profile>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/addProduct",

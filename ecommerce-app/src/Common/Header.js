@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-const Header = () => {
+const Header = ({ cartItemCount, isAdminLoggedIn, handleAdminLogout }) => {
+  console.log(isAdminLoggedIn);
+
   return (
     <header className="header">
       <div className="header__logo_container">
@@ -13,13 +15,13 @@ const Header = () => {
         <input placeholder="Search products..." />
       </div>
       <div className="header__button_container">
-        <Link to="/login" className="header__login">
-          Login
+        <Link to="/login" className="header__login" onClick={handleAdminLogout}>
+          {isAdminLoggedIn ? "Logout" : "Login"}
         </Link>
 
         <Link className="header__cart" to={"/cart"}>
           <ShoppingCartOutlinedIcon />
-          {1 > 0 && <div className="header__car_qty">{0}</div>}
+          {1 > 0 && <div className="header__car_qty">{cartItemCount}</div>}
         </Link>
       </div>
     </header>

@@ -1,13 +1,15 @@
 import "./../Styles/cart.css";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useOutletContext } from "react-router-dom";
 const Cart = () => {
-  let cartItems = [];
+  const { cartItems, handleUpdateQuantity, handleRemoveItem } =
+    useOutletContext();
   return (
     <div className="cart">
       <h1 className="cart__title">Your Shopping Cart</h1>
 
-      {cartItems.length === 0 ? (
+      {cartItems.length === 1 ? (
         <div className="cart__empty">
           <RemoveShoppingCartIcon style={{ fontSize: "60px", color: "#ccc" }} />
           <p>Your cart is currently empty.</p>
@@ -15,22 +17,44 @@ const Cart = () => {
       ) : (
         <>
           <div className="cart__items">
-            <div className="cart__item" key={1}>
-              <img src={"a"} alt={"sa"} className="cart__image" />
-              <div className="cart__details">
-                <h3>as</h3>
-                <p>₹2</p>
-                <div className="cart__quantity">
-                  <button className="cart__button--dec">-</button>
-                  <span>{3}</span>
-                  <button className="cart__button--inc">+</button>
+            {cartItems.map((item) => (
+              <div className="cart__item" key={item.id}>
+                <img src={item.image} alt={"sa"} className="cart__image" />
+                <div className="cart__details">
+                  <h3>{item.name}</h3>
+                  <p>₹{item.price}</p>
+                  <div className="cart__quantity">
+                    <button
+                      className="cart__button--dec"
+                      onClick={() => {
+                        handleUpdateQuantity(item.id, item.quantity - 1);
+                      }}
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() => {
+                        handleUpdateQuantity(item.id, item.quantity + 1);
+                      }}
+                      className="cart__button--inc"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="cart__subtotal">
+                    Subtotal: ₹{item.price * item.quantity}
+                  </p>
                 </div>
-                <p className="cart__subtotal">Subtotal: ₹300</p>
+                <button
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="cart__remove"
+                >
+                  <DeleteOutlineIcon />
+                </button>
               </div>
-              <button className="cart__remove">
-                <DeleteOutlineIcon />
-              </button>
-            </div>
+            ))}
           </div>
 
           <div className="cart__summary">

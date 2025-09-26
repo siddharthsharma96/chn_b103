@@ -1,17 +1,22 @@
 import "./../Styles/Profile.css";
 const Profile = () => {
+  const user = {
+    name: "rahul",
+    email: "sid@gmail.com",
+    role: "user",
+  };
   return (
     <div className="profile__container">
       <h2 className="profile__title">User Profile</h2>
       <div className="profile__card">
         <p>
-          <strong>Name:</strong> asd
+          <strong>Name:</strong> {user.name}
         </p>
         <p>
-          <strong>Email:</strong> asd@gmail.com
+          <strong>Email:</strong> {user.email}
         </p>
         <p>
-          <strong>Role:</strong> user
+          <strong>Role:</strong> {user.role}
         </p>
       </div>
 

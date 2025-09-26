@@ -1,34 +1,39 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import "./../Styles/product.css";
+import { useEffect, useState } from "react";
 const Product = () => {
-  const a = useParams();
-  console.log(a);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState();
+  const { products } = useOutletContext();
+  console.log(products);
+  useEffect(() => {
+    const obj = products.find((em) => {
+      return em.id === id;
+    });
+    setProduct(obj);
+  }, [id, products]);
 
   return (
     <div className="product">
-      <button className="product__back-button">
+      <button className="product__back-button" onClick={() => navigate("/")}>
         <ArrowBackOutlinedIcon></ArrowBackOutlinedIcon> Back to Products
       </button>
       <div className="product__container">
         <div className="product__image-wrapper">
-          <img
-            src={
-              "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=500&fit=crop"
-            }
-            className="product__image"
-          ></img>
+          <img src={product?.image} alt="qw" className="product__image"></img>
         </div>
         <div className="product__info">
-          <div className="product__category">Laptops</div>
+          <div className="product__category">{product?.category}</div>
           <h1 className="product__title">MacBook Pro M3</h1>
           <div className="flex items-center space-x-4 mb-4">
             <div className="product__rating">
               {[...Array(5)].map((_, i) =>
-                i < Math.floor(2.3) ? (
+                i < Math.floor(product?.rating) ? (
                   <StarRateIcon
                     key={i}
                     style={{ fontSize: "18px", color: "#facc15" }}
@@ -40,17 +45,28 @@ const Product = () => {
                   />
                 )
               )}
-              <span className="product__rating-value">3.2 (2000 reviews)</span>
+              <span className="product__rating-value">
+                {product?.rating} ({Math.floor(Math.random() * 500) + 100}{" "}
+                reviews)
+              </span>
             </div>
           </div>
-          <div className="product__price">₹199900</div>
-          <p className="product__description">
-            Apple MacBook Pro with M3 chip, 14-inch Liquid Retina XDR display
-          </p>
+          <div className="product__price">₹{product?.price}</div>
+          <p className="product__description">{product?.description}</p>
           <div className="flex items-center space-x-2">
-            <div className={`product__stock ${"product__stock--in"}`} />
-            <span className={`product__stock-dot ${"product__stock-dot--in"}`}>
-              In Stock
+            <div
+              className={`product__stock ${
+                product?.inStock ? "product__stock--in" : "product__stock--out"
+              }`}
+            />
+            <span
+              className={`product__stock-dot ${
+                product?.inStock
+                  ? "product__stock-dot--in"
+                  : "product__stock-dot--out"
+              }`}
+            >
+              {product?.inStock ? "In Stock" : "Out of Stock"}
             </span>
           </div>
           <p className="cart__item__added">Added in Cart</p>
