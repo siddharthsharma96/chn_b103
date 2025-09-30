@@ -78,5 +78,25 @@
     "category": "Cameras",
     "rating": 4.8,
     "inStock": true
+  },
+  {
+    "id": "9",
+    "name": "Cafsdfsgvjgnon EOS R5",
+    "description": "Prosefnsdfhbvfessional mirrorless camera with 45MP full-frame sensor",
+    "price": 3292121900,
+    "image": "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500&h=500&fit=crop",
+    "category": "Cameras",
+    "rating": 4.8,
+    "inStock": true
+  },
+  {
+    "id": "10",
+    "name": "Cafsdfsgvjgnon EOS R5",
+    "description": "Prosefnsdfhbvfessional mirrorless camera with 45MP full-frame sensor",
+    "price": 3292121900,
+    "image": "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500&h=500&fit=crop",
+    "category": "Cameras",
+    "rating": 4.8,
+    "inStock": true
   }
 ]
