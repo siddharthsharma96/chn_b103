@@ -57,3 +57,43 @@ exports.login = async (req, res) => {
     },
   });
 };
+
+exports.singUp = async (req, res) => {
+  const { name, email, password, role } = req.body;
+
+  // Check user is already exist
+  const existingUser = users.find((u) => u.email === email);
+  if (existingUser) {
+    return res.status(400).json({
+      status: "fail",
+      message: "User already Exists with this email",
+    });
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    name,
+    email,
+    password,
+    role: role || "user",
+  };
+  users.push(newUser);
+  const token = signToken(newUser.id);
+
+  res.status(201).json({
+    status: "success",
+    token,
+    data: {
+      user: newUser,
+    },
+  });
+};
+
+exports.allUser = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    data: {
+      users,
+    },
+  });
+};
