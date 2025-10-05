@@ -1,21 +1,22 @@
+const User = require("./../Models/userModel");
 const jwt = require("jsonwebtoken");
 
-let users = [
-  {
-    id: 1,
-    name: "sid",
-    email: "sid@example.com",
-    password: 12345,
-    role: "admin",
-  },
-  {
-    id: 2,
-    name: "rahul",
-    email: "rahul@example.com",
-    password: 12345,
-    role: "user",
-  },
-];
+// let users = [
+//   {
+//     id: 1,
+//     name: "sid",
+//     email: "sid@example.com",
+//     password: 12345,
+//     role: "admin",
+//   },
+//   {
+//     id: 2,
+//     name: "rahul",
+//     email: "rahul@example.com",
+//     password: 12345,
+//     role: "user",
+//   },
+// ];
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.TOKEN_JWT, {
@@ -34,8 +35,9 @@ exports.login = async (req, res) => {
   }
 
   // 2.Check User exist
-  const user = users.find((u) => u.email === email && u.password === password);
-  if (!user) {
+  const user = await User.findOne({ email }).select("+password");
+  // const user = users.find((u) => u.email === email && u.password === password);
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return res.status(401).json({
       status: "fail",
       message: "Invalid Email & Password",
@@ -44,7 +46,7 @@ exports.login = async (req, res) => {
 
   // 3.Generate Token
 
-  const token = signToken(user.id);
+  const token = signToken(user._id);
 
   res.status(200).json({
     status: "success",
@@ -59,26 +61,26 @@ exports.login = async (req, res) => {
 };
 
 exports.singUp = async (req, res) => {
-  const { name, email, password, role } = req.body;
-
+  // const { name, email, password, role } = req.body;
+  const newUser = await User.create(req.body);
   // Check user is already exist
-  const existingUser = users.find((u) => u.email === email);
-  if (existingUser) {
-    return res.status(400).json({
-      status: "fail",
-      message: "User already Exists with this email",
-    });
-  }
+  // const existingUser = users.find((u) => u.email === email);
+  // if (existingUser) {
+  //   return res.status(400).json({
+  //     status: "fail",
+  //     message: "User already Exists with this email",
+  //   });
+  // }
 
-  const newUser = {
-    id: users.length + 1,
-    name,
-    email,
-    password,
-    role: role || "user",
-  };
-  users.push(newUser);
-  const token = signToken(newUser.id);
+  // const newUser = {
+  //   id: users.length + 1,
+  //   name,
+  //   email,
+  //   password,
+  //   role: role || "user",
+  // };
+  // users.push(newUser);
+  const token = signToken(newUser._id);
 
   res.status(201).json({
     status: "success",
