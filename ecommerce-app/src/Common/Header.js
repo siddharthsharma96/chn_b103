@@ -15,9 +15,34 @@ const Header = ({ cartItemCount, isAdminLoggedIn, handleAdminLogout }) => {
         <input placeholder="Search products..." />
       </div>
       <div className="header__button_container">
-        <Link to="/login" className="header__login" onClick={handleAdminLogout}>
-          {isAdminLoggedIn ? "Logout" : "Login"}
-        </Link>
+        {isAdminLoggedIn ? (
+          <>
+            {isAdminLoggedIn === "admin" ? (
+              <Link to="/adminDashboard" className="header__login">
+                Dashboard
+              </Link>
+            ) : (
+              <Link to="/Profile" className="header__login">
+                Profile
+              </Link>
+            )}
+            <button
+              to="/login"
+              className="header__logout"
+              onClick={handleAdminLogout}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link
+            to="/login"
+            className="header__login"
+            onClick={handleAdminLogout}
+          >
+            {isAdminLoggedIn ? "Logout" : "Login"}
+          </Link>
+        )}
 
         <Link className="header__cart" to={"/cart"}>
           <ShoppingCartOutlinedIcon />

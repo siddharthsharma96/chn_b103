@@ -13,7 +13,7 @@ const Product = () => {
   console.log(products);
   useEffect(() => {
     const obj = products.find((em) => {
-      return em.id === id;
+      return em._id === id;
     });
     setProduct(obj);
   }, [id, products]);

@@ -1,6 +1,7 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import "./../Styles/login.css";
 import { useState } from "react";
+import { toast } from "react-toastify";
 const Login = () => {
   const { handleAdminLoginSuccess } = useOutletContext();
   const [loading, setLoading] = useState(false);
@@ -8,16 +9,53 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   if (email === "sid@gmail.in" && password === "qwertyu") {
+  //     localStorage.setItem("isAdmin", "true");
+  //     localStorage.setItem("adminloggedIn", "true");
+  //     localStorage.setItem("auth", "true");
+  //     handleAdminLoginSuccess();
+  //     navigate("/adminDashboard");
+  //   } else {
+  //     alert("invalid credentials");
+  //   }
+  // };
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email === "sid@gmail.in" && password === "qwertyu") {
-      localStorage.setItem("isAdmin", "true");
-      localStorage.setItem("adminloggedIn", "true");
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:9000/api/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.message || "Invalid Credentials");
+        setEmail("");
+        setPassword("");
+        setLoading(false);
+        return;
+      }
+
+      const { token, details } = data;
       localStorage.setItem("auth", "true");
+      localStorage.setItem("user", JSON.stringify(details));
+      localStorage.setItem("token", token);
       handleAdminLoginSuccess();
-      navigate("/adminDashboard");
-    } else {
-      alert("invalid credentials");
+      toast.success("Login Successful");
+      if (details.role === "admin") {
+        navigate("/adminDashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error("Something Went Wrong");
+      console.log(err);
     }
   };
   console.log(password, email);
@@ -44,7 +82,7 @@ const Login = () => {
         />
 
         <button type="submit" className="login__button">
-          Login
+          {loading ? "loading...." : "Login"}
         </button>
       </form>
     </div>

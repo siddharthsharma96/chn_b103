@@ -9,14 +9,14 @@ const ProductCards = ({ info }) => {
   const { handleAddtoCart, cartItems } = useOutletContext();
   const [addToCart, setAddToCart] = useState(false);
   useEffect(() => {
-    const isAlreadyInCart = cartItems.some((item) => item.id === info.id);
+    const isAlreadyInCart = cartItems.some((item) => item._id === info._id);
     setAddToCart(isAlreadyInCart);
   }, [cartItems, info.id]);
   return (
     <div
       className="group product-card"
       onClick={() => {
-        navigate(`/product/${info.id}`);
+        navigate(`/product/${info._id}`);
       }}
     >
       <div className="product-card__image-container">

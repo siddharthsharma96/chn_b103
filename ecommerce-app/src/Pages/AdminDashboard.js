@@ -8,7 +8,12 @@ import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 const AdminDashboard = () => {
-  const { products } = useOutletContext();
+  const {
+    products,
+    handleCreateProduct,
+    handleDeleteProduct,
+    handleUpdateProduct,
+  } = useOutletContext();
   const [stats, setStats] = useState({
     totalProducts: 0,
     inStock: 0,
@@ -24,6 +29,7 @@ const AdminDashboard = () => {
         (acc, p) => acc + p.price * (p.inStock ? 1 : 0),
         0
       );
+
       return {
         totalProducts,
         inStock,
@@ -31,8 +37,9 @@ const AdminDashboard = () => {
         totalValue,
       };
     };
+
     const updatedStats = calculateStats(products);
-    setStats(updatedStats);
+    setStats(updatedStats); // 👈 store it in state
   }, [products]);
   return (
     <div className="dashboard">
@@ -129,7 +136,10 @@ const AdminDashboard = () => {
                         <button className="btn-icon">
                           <EditNoteOutlinedIcon size={16} />
                         </button>
-                        <button className="btn-icon btn-danger">
+                        <button
+                          className="btn-icon btn-danger"
+                          onClick={() => handleDeleteProduct(product._id)}
+                        >
                           <DeleteOutlineOutlinedIcon />
                         </button>
                       </div>

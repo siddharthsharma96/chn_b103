@@ -4,8 +4,10 @@ const dotenv = require("dotenv");
 const productRoute = require("./Routes/productRoute");
 const authRoute = require("./Routes/authRoute");
 const mongoose = require("mongoose");
+const cors = require("cors");
 app.use(express.json());
 
+app.use(cors());
 dotenv.config({ path: "./config.env" });
 
 mongoose

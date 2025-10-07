@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import Header from "./Common/Header";
@@ -13,14 +13,15 @@ function App() {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
   });
-
+  const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchApiData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/product.json");
+        const response = await fetch("http://localhost:9000/api/v1/products");
         const data = await response.json();
-        setProducts(data);
+        setProducts(data.data.products);
       } catch (err) {
         console.error("Error fetching the data");
       } finally {
@@ -35,10 +36,10 @@ function App() {
 
   const handleAddtoCart = (product) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+      const existingItem = prev.find((item) => item._id === product._id);
       if (existingItem) {
         return prev.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -49,30 +50,61 @@ function App() {
 
   const handleUpdateQuantity = (productId, quantity) => {
     if (quantity === 0) {
-      setCartItems((prev) => prev.filter((item) => item.id !== productId));
+      setCartItems((prev) => prev.filter((item) => item._id !== productId));
     } else {
       setCartItems((prev) =>
         prev.map((item) =>
-          item.id === productId ? { ...item, quantity } : item
+          item._id === productId ? { ...item, quantity } : item
         )
       );
     }
   };
+  // const handleAdminLoginSuccess = () => {
+  //   setIsAdminLoggedIn(true);
+  //   localStorage.setItem("adminloggedIn", "true");
+  // };
   const handleAdminLoginSuccess = () => {
-    setIsAdminLoggedIn(true);
-    console.log("12121212");
-
-    localStorage.setItem("adminloggedIn", "true");
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      try {
+        const parseUser = JSON.parse(userData);
+        setUserRole(parseUser.role);
+      } catch (err) {
+        console.log("invalid user");
+      }
+    }
   };
+
+  const handleCreateProduct = (productData) => {
+    const newProduct = {
+      ...productData,
+      id: Date.now().toString(),
+    };
+    setProducts((prev) => [...prev, newProduct]);
+  };
+
+  const handleUpdateProduct = (id, updates) => {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === id ? { ...product, ...updates } : product
+      )
+    );
+  };
+
+  const handleDeleteProduct = (id) => {
+    setProducts((prev) => prev.filter((product) => product._id !== id));
+  };
+
   const handleRemoveItem = (productId) => {
     setCartItems((prev) => prev.filter((item) => item.id !== productId));
   };
 
   const handleAdminLogout = () => {
+    setUserRole(null);
     localStorage.removeItem("auth");
-    localStorage.removeItem("adminloggedIn");
-    localStorage.removeItem("isAdmin");
-    Navigate("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
     toast.error("Logged out");
   };
   const cartItemCount = cartItems.length;
@@ -80,7 +112,7 @@ function App() {
     <div className="App">
       <Header
         cartItemCount={cartItemCount}
-        isAdminLoggedIn={isAdminLoggedIn}
+        isAdminLoggedIn={userRole}
         handleAdminLogout={handleAdminLogout}
       ></Header>
       <main className="as">
@@ -96,6 +128,9 @@ function App() {
             setCartItems,
             handleAdminLoginSuccess,
             isAdminLoggedIn,
+            handleCreateProduct,
+            handleDeleteProduct,
+            handleUpdateProduct,
           }}
         ></Outlet>
       </main>
